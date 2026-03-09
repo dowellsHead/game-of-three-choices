@@ -13,13 +13,13 @@ function getComputerChoice(p_choice) {
         else
             c_choice = "scissors";
     }
-    console.log('player: ', p_choice);
-    console.log('computer: ', c_choice);
+    return c_choice;
 }
 
 function getHumanChoice() {
     console.log("not yeehaw");
     let player_choice = prompt('game on: rock, paper or scissors?');
+    player_choice = player_choice.toLowerCase();
     let decision_made = 0;
     while (decision_made == 0){
         if (player_choice=='rock' || player_choice=='scissors' || player_choice=='paper'){
@@ -33,6 +33,50 @@ function getHumanChoice() {
 
 }
 
+function playRound(humanChoice, computerChoice){
+    let result = 'tie';
+    if (humanChoice=='rock'){
+        switch (computerChoice){
+            case 'scissors': 
+                result = 'human';
+            break;
+            case 'paper':
+                result = 'computer';
+                break;
+        }
+    } else if (humanChoice=='paper'){
+        switch (computerChoice){
+            case 'rock': 
+                result = 'human';
+            break;
+            case 'scissors':
+                result = 'computer';
+                break;
+        }
+    } else if (humanChoice=='scissors'){
+        switch (computerChoice){
+            case 'paper': 
+                result = 'human';
+            break;
+            case 'rock':
+                result = 'computer';
+                break;
+        }
+    }
+    if (result=='computer'){
+        console.log('the tin can won! ', computerChoice, ' beats ', humanChoice, '!');
+    } else if (result=='human'){
+        console.log('the meat sack won! ', humanChoice, ' beats ', computerChoice, '!');
+    }
+
+}
 
 
-getComputerChoice(getHumanChoice())
+let humanScore = 0;
+let computerScore = 0;
+
+const humanSelection = getHumanChoice();
+const computerSelection = getComputerChoice(humanSelection);
+
+playRound(humanSelection, computerSelection);
+
