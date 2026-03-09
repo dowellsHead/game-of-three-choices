@@ -65,8 +65,12 @@ function playRound(humanChoice, computerChoice){
     }
     if (result=='computer'){
         console.log('the tin can won! ', computerChoice, ' beats ', humanChoice, '!');
+        computerScore++;
     } else if (result=='human'){
         console.log('the meat sack won! ', humanChoice, ' beats ', computerChoice, '!');
+        humanScore++;
+    } else if (result=='tie'){
+        console.log('this is a tie! would you like to upgrade it to a bow?');
     }
 
 }
@@ -78,5 +82,5 @@ let computerScore = 0;
 const humanSelection = getHumanChoice();
 const computerSelection = getComputerChoice(humanSelection);
 
-playRound(humanSelection, computerSelection);
-
+playRound(humanSelection, computerSelection, humanScore, computerScore);
+console.log('the score is thus\nhuman: ', humanScore, '; computer: ', computerScore);
