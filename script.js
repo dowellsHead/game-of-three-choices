@@ -1,5 +1,4 @@
 function getComputerChoice(p_choice) {
-    console.log('yeeehaw');
     let c_choice = p_choice;
     let item = Math.random();
     if (item < 0.99) {
@@ -16,25 +15,8 @@ function getComputerChoice(p_choice) {
     return c_choice;
 }
 
-function getHumanChoice() {
-    console.log("not yeehaw");
-    let player_choice = prompt('game on: rock, paper or scissors?');
-    player_choice = player_choice.toLowerCase();
-    let decision_made = 0;
-    while (decision_made == 0){
-        if (player_choice=='rock' || player_choice=='scissors' || player_choice=='paper'){
-            decision_made = 1;
-            return player_choice;
-        }
-        else
-            player_choice = prompt('u made a mistake, dude. try again');
 
-    }
-
-}
-
-function playRound(){
-    const humanChoice = getHumanChoice();
+function playRound(humanChoice, scoring){
     const computerChoice = getComputerChoice(humanChoice);
     let result = 'tie';
     if (humanChoice=='rock'){
@@ -67,46 +49,53 @@ function playRound(){
     }
     if (result=='computer'){
         console.log('the tin can won! ', computerChoice, ' beats ', humanChoice, '!');
+        scoring.computer++;
     } else if (result=='human'){
         console.log('the meat sack won! ', humanChoice, ' beats ', computerChoice, '!');
+        scoring.human++;
     } else if (result=='tie'){
         console.log('this is a tie! would you like to upgrade it to a bow?');
     }
-    return result;
-
 }
 
-function playGame(num){
-
-    let humanScore = 0;
-    let computerScore = 0;
+function playGame(){
+    let score = {
+        human: 0,
+        computer: 0,
+    };
     
-    while (num>0) {
-        let scoring = playRound(humanScore, computerScore);
-        switch (scoring) {
-            case 'human':
-                humanScore++;
+    let humanSelection = '';
+    let choice = document.querySelector('#choice');
+    choice.addEventListener('click', (event) => {
+        let target = event.target;
+        if (score.human<5 && score.computer<5){
+          switch (target.id) {
+            case 'rock':
+                humanSelection = 'rock';
+                playRound(humanSelection, score);
                 break;
-            case 'computer':
-                computerScore++;
+            case 'scissors':
+                humanSelection = 'scissors';
+                playRound(humanSelection, score);
                 break;
-            case 'tie':
+            case 'paper':
+                humanSelection = 'paper';
+                playRound(humanSelection, score);
                 break;
+            }  
+            console.log('the score is thus\nhuman: ', score.human, '; computer: ', score.computer);    
+        } else {
+                    if (score.human>score.computer){
+                    console.log('ultimate human victory over the machine! yay');
+                    } else if (score.human<score.computer){
+                    console.log('they won chess, and now rock-paper-scissors??? ubelivable!!');
+                    } else
+                    console.log('ye, boring stuff, it\'s a tie, guys. refresh for another round');
         }
-        num--;
-    }
-
-    console.log('the score is thus\nhuman: ', humanScore, '; computer: ', computerScore);
-    if (humanScore>computerScore){
-        console.log('ultimate human victory over the machine! yay');
-    } else if (humanScore<computerScore){
-        console.log('they won chess, and now rock-paper-scissors??? ubelivable!!');
-    } else
-        console.log('ye, boring stuff, it\'s a tie, guys. refresh for another round');
-
+    }); 
 }
 
 
-let numberRound = prompt('give me a number of rounds, buddy');
+playGame();
 
-playGame(numberRound);
+
