@@ -19,6 +19,7 @@ function getComputerChoice(p_choice) {
 function playRound(humanChoice, scoring){
     const computerChoice = getComputerChoice(humanChoice);
     let result = 'tie';
+    let scoreInfo = 'this is a tie! would you like to upgrade it to a bow?';
     if (humanChoice=='rock'){
         switch (computerChoice){
             case 'scissors': 
@@ -48,14 +49,41 @@ function playRound(humanChoice, scoring){
         }
     }
     if (result=='computer'){
-        console.log('the tin can won! ', computerChoice, ' beats ', humanChoice, '!');
+        scoreInfo = 'the tin can won! ' + computerChoice + ' beats ' + humanChoice + '!';
         scoring.computer++;
     } else if (result=='human'){
-        console.log('the meat sack won! ', humanChoice, ' beats ', computerChoice, '!');
+        scoreInfo = 'the meat sack won! ' + humanChoice + ' beats ' + computerChoice + '!';
         scoring.human++;
-    } else if (result=='tie'){
-        console.log('this is a tie! would you like to upgrade it to a bow?');
-    }
+    } 
+    displayComments(scoreInfo);
+    activeScore = 'human: ' + scoring.human + '; computer: ' + scoring.computer;
+    displayScore(activeScore);
+}
+
+function displayComments(newContext){
+    const scoreDisplay = document.querySelector('.generalDisplay');
+    const prevChild = document.querySelector('.generalDisplay > div#comments');
+    const newChild = document.createElement('div');
+    
+    newChild.setAttribute('id', 'comments');
+    newChild.classList.add('content');
+    newChild.textContent = newContext;
+    scoreDisplay.replaceChild(newChild, prevChild);
+
+    
+}
+
+function displayScore(newContext){
+    const scoreDisplay = document.querySelector('.generalDisplay');
+    const prevChild = document.querySelector('.generalDisplay > div#score');
+    const newChild = document.createElement('div');
+    
+    newChild.setAttribute('id', 'score');
+    newChild.classList.add('content');
+    newChild.textContent = newContext;
+    scoreDisplay.replaceChild(newChild, prevChild);
+
+    
 }
 
 function playGame(){
@@ -83,14 +111,15 @@ function playGame(){
                 playRound(humanSelection, score);
                 break;
             }  
-            console.log('the score is thus\nhuman: ', score.human, '; computer: ', score.computer);    
-        } else {
+                
+        } else if (score.human == 5 || score.computer ==5){
                     if (score.human>score.computer){
-                    console.log('ultimate human victory over the machine! yay');
+                    displayComments('ultimate human victory over the machine! yay');
                     } else if (score.human<score.computer){
-                    console.log('they won chess, and now rock-paper-scissors??? ubelivable!!');
+                    displayComments('they won chess, and now rock-paper-scissors??? ubelivable!!');
                     } else
-                    console.log('ye, boring stuff, it\'s a tie, guys. refresh for another round');
+                    displayComments('ye, boring stuff, it\'s a tie, guys. refresh for another round');
+                    displayScore('the game is over, refresh for restart');
         }
     }); 
 }
